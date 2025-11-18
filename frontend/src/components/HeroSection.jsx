@@ -1,20 +1,25 @@
-const HeroSection = () => (
-  <section id="hero" className="hero-section relative overflow-hidden rounded-3xl noise-overlay">
-    <div className="hero-gradient" />
-    <div className="hero-content">
+import useSectionNavigation from '../hooks/useSectionNavigation'
+
+const HeroSection = () => {
+  const goToSection = useSectionNavigation()
+
+  return (
+    <section id="hero" className="hero-section relative overflow-hidden rounded-3xl noise-overlay">
+      <div className="hero-gradient" />
+      <div className="hero-content">
       <div className="hero-left">
         <span className="badge hero-badge">Backend Developer</span>
         <p className="hero-name text-gradient">MUJTABA ALMAS</p>
         <h1 className="hero-title">Python Developer crafting scalable APIs & systems.</h1>
         <p className="hero-description">Graduated with a BS in Computer Science and certified in Python, with a focus on building efficient, production-ready applications.</p>
         <div className="hero-actions">
-          <a href="#projects" className="btn btn-primary">
+          <button type="button" className="btn btn-primary" onClick={() => goToSection('#projects')}>
             <span>Explore work</span>
             <svg className="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 17L17 7m0 0H7m10 0v10" />
             </svg>
-          </a>
-          <a href="#contact" className="btn btn-secondary">
+          </button>
+          <button type="button" className="btn btn-secondary" onClick={() => goToSection('#contact')}>
             <span>Say Hi</span>
             <svg className="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
@@ -24,7 +29,7 @@ const HeroSection = () => (
                 d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
               />
             </svg>
-          </a>
+          </button>
           <a href="https://linkedin.com/in/mujtabaalmas" className="btn btn-tertiary" target="_blank" rel="noopener noreferrer">
             <span>LinkedIn</span>
             <svg className="icon" fill="currentColor" viewBox="0 0 24 24">
@@ -47,7 +52,8 @@ const HeroSection = () => (
         </div>
       </div>
     </div>
-  </section>
-)
+    </section>
+  )
+}
 
 export default HeroSection

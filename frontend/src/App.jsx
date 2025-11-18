@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Navbar from './components/Navbar'
-import HeroSection from './components/HeroSection'
-import SkillsSlider from './components/SkillsSlider'
-import SkillsSection from './components/SkillsSection'
-import ProjectsSection from './components/ProjectsSection'
-import ExperienceSection from './components/ExperienceSection'
-import BlogSection from './components/BlogSection'
-import ContactSection from './components/ContactSection'
-import Footer from './components/Footer'
+import HomePage from './pages/HomePage'
+import BlogPage from './pages/BlogPage'
+import BlogArticlePage from './pages/BlogArticlePage'
+import TermsPage from './pages/TermsPage'
+import PrivacyPage from './pages/PrivacyPage'
+import CookiePage from './pages/CookiePage'
 import {
   CONTACT_DETAILS,
   CONTACT_LINKS,
@@ -104,7 +103,7 @@ function App() {
     if (!backendAvailable) {
       setFormStatus({
         type: 'error',
-        message: 'The backend is not available yet. Please reach out via hello@example.com.'
+        message: 'The backend is not available yet. Please reach out via insights.mujtaba@gmail.com'
       })
       return
     }
@@ -131,25 +130,32 @@ function App() {
 
   return (
     <>
-      <Navbar />
-      <div className="container">
-        <main className="space-y-12">
-          <HeroSection />
-          <SkillsSlider items={SLIDER_ITEMS} />
-          <SkillsSection skills={skills} skillBarsActive={skillBarsActive} />
-          <ProjectsSection projects={projects} />
-          <ExperienceSection />
-          <BlogSection />
-          <ContactSection
-            formStatus={formStatus}
-            isSubmitting={isSubmitting}
-            onSubmit={handleContactSubmit}
-            contactLinks={CONTACT_LINKS}
-            contactDetails={CONTACT_DETAILS}
+      <BrowserRouter>
+        <Navbar />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <HomePage
+                skills={skills}
+                projects={projects}
+                skillBarsActive={skillBarsActive}
+                sliderItems={SLIDER_ITEMS}
+                formStatus={formStatus}
+                isSubmitting={isSubmitting}
+                onSubmit={handleContactSubmit}
+                contactLinks={CONTACT_LINKS}
+                contactDetails={CONTACT_DETAILS}
+              />
+            }
           />
-          <Footer />
-        </main>
-      </div>
+          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/blog/:slug" element={<BlogArticlePage />} />
+           <Route path="/terms" element={<TermsPage />} />
+           <Route path="/privacy" element={<PrivacyPage />} />
+           <Route path="/cookies" element={<CookiePage />} />
+        </Routes>
+      </BrowserRouter>
     </>
   )
 }

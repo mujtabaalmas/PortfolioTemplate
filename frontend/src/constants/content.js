@@ -75,25 +75,100 @@ export const EXPERIENCE_ITEMS = [
 
 export const BLOG_POSTS = [
   {
+    slug: 'designing-apis-for-async-workflows',
     category: 'ARCHITECTURE',
     title: 'Designing APIs for Async Workflows',
     excerpt: 'Patterns for orchestrating background jobs without blocking clients.',
     date: 'Oct 2024',
-    href: 'https://example.com/blog/api-async'
+    readTime: '7 min read',
+    intro: 'How to de-risk async flows by pairing event-driven building blocks with simple coordination rules.',
+    content: [
+      {
+        heading: 'Map Producers and Consumers',
+        body: [
+          'Start by writing down every touchpoint a request travels through and label what each service produces or consumes.',
+          'The diagram instantly reveals which calls can be fire-and-forget and where you still need synchronous acknowledgements.'
+        ]
+      },
+      {
+        heading: 'Pick a Coordination Pattern',
+        body: [
+          'Sagas, outbox + polling, and lightweight orchestrators all work. The right choice depends on operator skillset and failure appetite.',
+          'Prod teams I work with default to transaction outbox because it keeps business logic in the service codebase while remaining observable.'
+        ]
+      },
+      {
+        heading: 'Instrument the Edges',
+        body: [
+          'Async systems only feel reliable when tracing gives you the same answers you had in monoliths.',
+          'Ship spans and correlation IDs with every enqueue/dequeue so incidents read like a story instead of a scavenger hunt.'
+        ]
+      }
+    ]
   },
   {
+    slug: 'observability-starter-kit-for-flask',
     category: 'PLATFORM',
     title: 'Observability Starter Kit for Flask',
     excerpt: 'Use OpenTelemetry and structured logging to unlock clarity in prod.',
     date: 'Aug 2024',
-    href: 'https://example.com/blog/flask-observability'
+    readTime: '5 min read',
+    intro: 'Drop-in recipe for instrumenting API services without becoming the telemetry team.',
+    content: [
+      {
+        heading: 'Trace Every Request',
+        body: [
+          'Install auto-instrumentation for Flask and your HTTP client so spans show the full round-trip.',
+          'Forward trace IDs into logs to jump between data sets instantly during incidents.'
+        ]
+      },
+      {
+        heading: 'Define Golden Signals Early',
+        body: [
+          'Latency, error rate, saturation, and traffic still apply— codify them in dashboards before you need them.',
+          'Pair each signal with a runbook link to shorten the distance between page and fix.'
+        ]
+      },
+      {
+        heading: 'Budget for Sampling',
+        body: [
+          'Full fidelity traces are expensive. Adaptive sampling keeps you within budget while preserving rare paths.',
+          'Emit custom events for deploys, migrations, and feature flags so graphs explain themselves.'
+        ]
+      }
+    ]
   },
   {
+    slug: 'deploying-fastapi-to-containers',
     category: 'DEVOPS',
     title: 'Deploying FastAPI to Containers the Calm Way',
     excerpt: 'Blueprint for containerized deployments on Render or Fly.io.',
     date: 'May 2024',
-    href: 'https://example.com/blog/fastapi-deploy'
+    readTime: '6 min read',
+    intro: 'A staging-to-prod checklist that keeps FastAPI releases boring even under load.',
+    content: [
+      {
+        heading: 'Bake Security and Health In',
+        body: [
+          'Use multi-stage Docker builds, scan images, and ship a /health route that checks dependencies up the chain.',
+          'A fast fail signal lets orchestrators replace bad pods before clients notice.'
+        ]
+      },
+      {
+        heading: 'Treat Config as Code',
+        body: [
+          'Stick to environment variables, template them with your IaC tool, and keep secrets outside the repo.',
+          'Document the minimal set required so onboarding engineers never guess at runtime settings.'
+        ]
+      },
+      {
+        heading: 'Automate Rollbacks',
+        body: [
+          'Blue/green or canary releases are non-negotiable once customers rely on the API.',
+          'Wire rollback buttons to the same manifests you apply forward so recovery is muscle memory.'
+        ]
+      }
+    ]
   }
 ]
 

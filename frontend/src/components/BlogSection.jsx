@@ -19,7 +19,7 @@ const BlogSection = () => (
           <p className="blog-excerpt">{post.excerpt}</p>
           <div className="blog-footer">
             <span className="blog-date">{post.date}</span>
-            <a href={post.href} target="_blank" rel="noopener noreferrer" className="blog-link">
+            <a href={`/blog/${post.slug}`} target="_blank" rel="noopener noreferrer" className="blog-link">
               Read
               <svg className="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 17L17 7m0 0H7m10 0v10" />

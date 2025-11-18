@@ -1,8 +1,12 @@
 import { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { NAV_LINKS } from '../constants/content'
+import useSectionNavigation from '../hooks/useSectionNavigation'
 
 const Navbar = () => {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const navigate = useNavigate()
+  const goToSection = useSectionNavigation()
 
   useEffect(() => {
     if (!isMobileMenuOpen || typeof document === 'undefined') return undefined
@@ -28,13 +32,27 @@ const Navbar = () => {
 
   const closeMobileMenu = () => setMobileMenuOpen(false)
 
+  const handleBrandClick = (event) => {
+    event.preventDefault()
+    closeMobileMenu()
+    goToSection('#hero')
+  }
+
+  const handleNavigation = (href) => {
+    if (!href) return
+    if (href.startsWith('#')) {
+      goToSection(href)
+      return
+    }
+    navigate(href)
+  }
+
   return (
     <nav className="navbar">
       <div className="navbar-container">
-        <a href="#hero" className="navbar-brand">
+        <Link to="/" className="navbar-brand" aria-label="Go to home" onClick={handleBrandClick}>
           <img src="/assets/logo.svg" alt="Mujtaba logo" className="brand-logo" />
-          <span className="brand-name">Mujtaba</span>
-        </a>
+        </Link>
 
         <button
           className={`navbar-toggle ${isMobileMenuOpen ? 'active' : ''}`}
@@ -49,9 +67,14 @@ const Navbar = () => {
 
         <div className="navbar-links">
           {NAV_LINKS.map((link) => (
-            <a key={link.href} href={link.href} className="navbar-link">
+            <button
+              key={link.href}
+              type="button"
+              className="navbar-link navbar-link-button"
+              onClick={() => handleNavigation(link.href)}
+            >
               {link.label}
-            </a>
+            </button>
           ))}
         </div>
       </div>
@@ -59,9 +82,17 @@ const Navbar = () => {
       <div className={`mobile-menu ${isMobileMenuOpen ? 'active' : ''}`} onClick={closeMobileMenu}>
         <div className="mobile-menu-content" onClick={(event) => event.stopPropagation()}>
           {NAV_LINKS.map((link) => (
-            <a key={link.href} href={link.href} className="mobile-menu-link" onClick={closeMobileMenu}>
+            <button
+              key={link.href}
+              type="button"
+              className="mobile-menu-link"
+              onClick={() => {
+                handleNavigation(link.href)
+                closeMobileMenu()
+              }}
+            >
               {link.label}
-            </a>
+            </button>
           ))}
         </div>
       </div>
