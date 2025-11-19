@@ -2,7 +2,7 @@ import Footer from '../components/Footer'
 import { BLOG_POSTS } from '../constants/content'
 
 const BlogPage = () => (
-  <div className="container">
+  <div className="container page-container">
     <main className="space-y-12">
       <section className="section-padding">
         <div className="section-header">

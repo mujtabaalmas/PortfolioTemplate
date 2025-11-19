@@ -7,6 +7,10 @@ import BlogArticlePage from './pages/BlogArticlePage'
 import TermsPage from './pages/TermsPage'
 import PrivacyPage from './pages/PrivacyPage'
 import CookiePage from './pages/CookiePage'
+import SkillsPage from './pages/SkillsPage'
+import ProjectsPage from './pages/ProjectsPage'
+import ExperiencePage from './pages/ExperiencePage'
+import ContactPage from './pages/ContactPage'
 import {
   CONTACT_DETAILS,
   CONTACT_LINKS,
@@ -141,6 +145,21 @@ function App() {
                 projects={projects}
                 skillBarsActive={skillBarsActive}
                 sliderItems={SLIDER_ITEMS}
+                formStatus={formStatus}
+                isSubmitting={isSubmitting}
+                onSubmit={handleContactSubmit}
+                contactLinks={CONTACT_LINKS}
+                contactDetails={CONTACT_DETAILS}
+              />
+            }
+          />
+          <Route path="/skills" element={<SkillsPage skills={skills} skillBarsActive={skillBarsActive} />} />
+          <Route path="/projects" element={<ProjectsPage projects={projects} />} />
+          <Route path="/experience" element={<ExperiencePage />} />
+          <Route
+            path="/contact"
+            element={
+              <ContactPage
                 formStatus={formStatus}
                 isSubmitting={isSubmitting}
                 onSubmit={handleContactSubmit}
