@@ -13,12 +13,12 @@ const HeroSection = () => {
         <h1 className="hero-title">Python Developer crafting scalable APIs & systems.</h1>
         <p className="hero-description">Graduated with a BS in Computer Science and certified in Python, with a focus on building efficient, production-ready applications.</p>
         <div className="hero-actions">
-          <button type="button" className="btn btn-primary" onClick={() => goToSection('#projects')}>
+          <a href="/projects" className="btn btn-primary">
             <span>Explore work</span>
             <svg className="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 17L17 7m0 0H7m10 0v10" />
             </svg>
-          </button>
+          </a>
           <a href="mailto:insights.mujtaba@gmail.com" className="btn btn-secondary">
             <span>Say Hi</span>
             <svg className="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
