@@ -1,5 +1,6 @@
-# Allow crawlers to read on-page HTML/text content.
+# Allow crawlers complete access to public routes and static assets.
 User-agent: *
 Allow: /
-Disallow: /assets/
-Disallow: /dist/
+
+# Provide sitemap for faster discovery.
+Sitemap: https://mujtabaalmas.me/sitemap.xml
