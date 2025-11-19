@@ -1,9 +1,10 @@
 export const NAV_LINKS = [
-  { href: '#hero', label: 'Home' },
-  { href: '#projects', label: 'Projects' },
-  { href: '#experience', label: 'Experience' },
-  { href: '#blog', label: 'Posts' },
-  { href: '#contact', label: 'Say Hi' }
+  { href: '/', label: 'Home', icon: 'home' },
+  { href: '/skills', label: 'Skills', icon: 'skills' },
+  { href: '/projects', label: 'Projects', icon: 'projects' },
+  { href: '/experience', label: 'Experience', icon: 'experience' },
+  { href: '/blog', label: 'Posts', icon: 'posts' },
+  { href: '/contact', label: 'Contact Me', icon: 'contact' }
 ]
 
 export const FALLBACK_SKILLS = [

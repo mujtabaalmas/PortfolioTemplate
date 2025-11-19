@@ -1,7 +1,4 @@
-import { CONTACT_LINKS, FOOTER_NAV } from '../constants/content'
-import useSectionNavigation from '../hooks/useSectionNavigation'
-
-const formatLabel = (href) => href.replace('#', '').replace(/^[a-z]/, (match) => match.toUpperCase())
+import { CONTACT_LINKS } from '../constants/content'
 
 const SOCIAL_ICONS = {
   Email: (
@@ -30,66 +27,27 @@ const SOCIAL_ICONS = {
   )
 }
 
-const LEGAL_LINKS = [
-  { label: 'Terms of Service', href: '/terms' },
-  { label: 'Privacy Policy', href: '/privacy' },
-  { label: 'Cookie Policy', href: '/cookies' }
-]
-
-const Footer = () => {
-  const goToSection = useSectionNavigation()
-
-  return (
-    <footer className="footer">
-      <div className="footer-grid">
-        <div className="footer-section footer-more">
-          <h4 className="footer-section-title">More</h4>
-          <ul className="footer-section-links">
-            {FOOTER_NAV.secondary.map((href) => (
-              <li key={href}>
-                <button type="button" className="footer-link footer-link-button" onClick={() => goToSection(href)}>
-                  {formatLabel(href)}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="footer-section footer-legal">
-          <h4 className="footer-section-title">Legal</h4>
-          <ul className="footer-section-links">
-            {LEGAL_LINKS.map((link) => (
-              <li key={link.href}>
-                <a href={link.href} className="footer-link">
-                  {link.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="footer-section footer-connect">
-          <h4 className="footer-section-title">Connect</h4>
-          <div className="footer-socials">
-            {CONTACT_LINKS.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                title={link.label}
-                aria-label={`Go to ${link.label}`}
-                className={`footer-social-button footer-social-${link.label.toLowerCase()}`}
-              >
-                {SOCIAL_ICONS[link.label]}
-              </a>
-            ))}
-          </div>
-        </div>
+const Footer = () => (
+  <footer className="footer">
+    <div className="footer-connect-row">
+      <h4 className="footer-section-title">Connect</h4>
+      <div className="footer-socials">
+        {CONTACT_LINKS.map((link) => (
+          <a
+            key={link.label}
+            href={link.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            title={link.label}
+            aria-label={`Go to ${link.label}`}
+            className={`footer-social-button footer-social-${link.label.toLowerCase()}`}
+          >
+            {SOCIAL_ICONS[link.label]}
+          </a>
+        ))}
       </div>
-      <div className="footer-bottom">
-        <p className="footer-copy-fixed">© 2025 Mujtaba Almas. All rights reserved.</p>
-      </div>
-    </footer>
-  )
-}
+    </div>
+  </footer>
+)
 
 export default Footer

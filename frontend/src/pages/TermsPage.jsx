@@ -24,7 +24,7 @@ const sections = [
 ]
 
 const TermsPage = () => (
-  <div className="container legal-page">
+  <div className="container page-container legal-page">
     <section className="legal-hero">
       <p className="legal-eyebrow">Terms of Service</p>
       <h1>How to use this site respectfully</h1>

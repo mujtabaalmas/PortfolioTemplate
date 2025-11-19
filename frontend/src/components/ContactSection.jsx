@@ -11,20 +11,20 @@ const ContactSection = ({ formStatus, isSubmitting, onSubmit, contactLinks, cont
           <div className="form-row">
             <div className="form-group">
               <label htmlFor="name">Name</label>
-              <input id="name" name="name" type="text" required />
+              <input id="name" name="name" type="text" autoComplete="name" required />
             </div>
             <div className="form-group">
               <label htmlFor="email">Email</label>
-              <input id="email" name="email" type="email" required />
+              <input id="email" name="email" type="email" autoComplete="email" required />
             </div>
           </div>
           <div className="form-group">
             <label htmlFor="company">Company (optional)</label>
-            <input id="company" name="company" type="text" />
+            <input id="company" name="company" type="text" autoComplete="organization" />
           </div>
           <div className="form-group">
             <label htmlFor="message">Project notes</label>
-            <textarea id="message" name="message" required />
+            <textarea id="message" name="message" autoComplete="off" required />
           </div>
           <button type="submit" className="btn btn-primary btn-large btn-submit" disabled={isSubmitting}>
             <span>{isSubmitting ? 'Sending…' : 'Send message'}</span>

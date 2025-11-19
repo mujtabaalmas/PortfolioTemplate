@@ -8,7 +8,7 @@ const BlogArticlePage = () => {
   const post = BLOG_POSTS.find((entry) => entry.slug === slug)
 
   return (
-    <div className="container">
+    <div className="container page-container">
       <main className="space-y-12">
         <section className="section-padding">
           {!post ? (

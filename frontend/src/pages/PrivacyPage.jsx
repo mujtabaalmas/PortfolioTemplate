@@ -1,7 +1,7 @@
 import Footer from '../components/Footer'
 
 const PrivacyPage = () => (
-  <div className="container legal-page">
+  <div className="container page-container legal-page">
     <section className="legal-hero">
       <p className="legal-eyebrow">Privacy Policy</p>
       <h1>How your data is handled</h1>

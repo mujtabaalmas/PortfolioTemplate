@@ -2,24 +2,10 @@ import { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import HeroSection from '../components/HeroSection'
 import SkillsSlider from '../components/SkillsSlider'
-import SkillsSection from '../components/SkillsSection'
-import ProjectsSection from '../components/ProjectsSection'
-import ExperienceSection from '../components/ExperienceSection'
-import BlogSection from '../components/BlogSection'
-import ContactSection from '../components/ContactSection'
+import AboutMeSection from '../components/AboutMeSection'
 import Footer from '../components/Footer'
 
-const HomePage = ({
-  skills,
-  projects,
-  skillBarsActive,
-  sliderItems,
-  formStatus,
-  isSubmitting,
-  onSubmit,
-  contactLinks,
-  contactDetails
-}) => {
+const HomePage = ({ sliderItems }) => {
   const location = useLocation()
   const navigate = useNavigate()
 
@@ -43,17 +29,7 @@ const HomePage = ({
       <main className="space-y-12">
         <HeroSection />
         <SkillsSlider items={sliderItems} />
-        <SkillsSection skills={skills} skillBarsActive={skillBarsActive} />
-        <ProjectsSection projects={projects} />
-        <ExperienceSection />
-        <BlogSection />
-        <ContactSection
-          formStatus={formStatus}
-          isSubmitting={isSubmitting}
-          onSubmit={onSubmit}
-          contactLinks={contactLinks}
-          contactDetails={contactDetails}
-        />
+        <AboutMeSection />
         <Footer />
       </main>
     </div>

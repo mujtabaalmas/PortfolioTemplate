@@ -1,7 +1,7 @@
 import Footer from '../components/Footer'
 
 const CookiePage = () => (
-  <div className="container legal-page">
+  <div className="container page-container legal-page">
     <section className="legal-hero">
       <p className="legal-eyebrow">Cookie Policy</p>
       <h1>Understanding cookies on this site</h1>
