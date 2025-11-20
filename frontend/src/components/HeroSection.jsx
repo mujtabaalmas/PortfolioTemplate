@@ -1,8 +1,4 @@
-import useSectionNavigation from '../hooks/useSectionNavigation'
-
 const HeroSection = () => {
-  const goToSection = useSectionNavigation()
-
   return (
     <section id="hero" className="hero-section relative overflow-hidden rounded-3xl noise-overlay">
       <div className="hero-gradient" />
