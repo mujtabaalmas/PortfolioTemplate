@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Navbar from './components/Navbar'
+import ScrollRestoration from './components/ScrollRestoration'
 import HomePage from './pages/HomePage'
 import BlogPage from './pages/BlogPage'
 import BlogArticlePage from './pages/BlogArticlePage'
@@ -123,6 +124,7 @@ function App() {
       setFormStatus({ type: 'success', message: "Thanks for reaching out! I'll reply soon." })
       form.reset()
     } catch (error) {
+      console.error('Contact form submission failed', error)
       setFormStatus({
         type: 'error',
         message: 'Failed to send message. Please try again later or email me directly.'
@@ -135,6 +137,7 @@ function App() {
   return (
     <>
       <BrowserRouter>
+        <ScrollRestoration />
         <Navbar />
         <Routes>
           <Route

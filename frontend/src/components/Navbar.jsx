@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { NAV_LINKS } from '../constants/content'
 import useSectionNavigation from '../hooks/useSectionNavigation'
@@ -87,6 +87,7 @@ const ICON_MAP = {
 
 const Navbar = () => {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const bodyScrollStyles = useRef({ overflow: '', paddingRight: '' })
   const navigate = useNavigate()
   const location = useLocation()
   const goToSection = useSectionNavigation()
@@ -105,11 +106,28 @@ const Navbar = () => {
   }, [isMobileMenuOpen])
 
   useEffect(() => {
-    if (typeof document === 'undefined') return undefined
-    const originalOverflow = document.body.style.overflow
-    document.body.style.overflow = isMobileMenuOpen ? 'hidden' : originalOverflow
+    if (typeof window === 'undefined' || typeof document === 'undefined') return undefined
+
+    const { body, documentElement } = document
+    const storedStyles = bodyScrollStyles.current
+
+    if (isMobileMenuOpen) {
+      storedStyles.overflow = body.style.overflow
+      storedStyles.paddingRight = body.style.paddingRight
+
+      const scrollBarWidth = window.innerWidth - documentElement.clientWidth
+      body.style.overflow = 'hidden'
+      if (scrollBarWidth > 0) {
+        body.style.paddingRight = `${scrollBarWidth}px`
+      }
+    } else {
+      body.style.overflow = storedStyles.overflow
+      body.style.paddingRight = storedStyles.paddingRight
+    }
+
     return () => {
-      document.body.style.overflow = originalOverflow
+      body.style.overflow = storedStyles.overflow
+      body.style.paddingRight = storedStyles.paddingRight
     }
   }, [isMobileMenuOpen])
 
@@ -144,7 +162,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar-floating">
         <Link to="/" className="navbar-brand" aria-label="Go to home" onClick={handleBrandClick}>
-          <img src="/assets/logo.svg" alt="Mujtaba logo" className="brand-logo" />
+          <img src="/assets/logo.png" alt="Mujtaba logo" className="brand-logo" />
         </Link>
 
         <div className="navbar-links">
