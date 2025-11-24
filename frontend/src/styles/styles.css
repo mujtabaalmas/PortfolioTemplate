@@ -1,10 +1,12 @@
 :root {
   color-scheme: dark;
-  --background: #01030b;
+  --site-bg: #000000;
   --surface: rgba(2, 6, 23, 0.85);
   --foreground: #f8fafc;
-  --card: rgba(2, 6, 23, 0.72);
-  --card-border: rgba(148, 163, 184, 0.25);
+  --card-bg: rgba(2, 6, 23, 0.8);
+  --card-border: rgba(255, 255, 255, 0.15);
+  --card-border-hover: rgba(255, 255, 255, 0.35);
+  --card-shadow: 0 30px 80px rgba(2, 6, 23, 0.45);
   --glow: rgba(99, 102, 241, 0.45);
   --night: #030712;
   --violet-500: #a855f7;
@@ -19,12 +21,20 @@
 }
 
 body {
-  background-color: var(--background);
+  background-color: var(--site-bg);
   color: var(--foreground);
   font-family: 'Space Grotesk', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
   min-height: 100vh;
   line-height: 1.6;
   scroll-behavior: smooth;
+}
+
+#root,
+main,
+.page-container,
+.container,
+.section-padding {
+  background-color: var(--site-bg);
 }
 
 ::selection {
@@ -40,6 +50,7 @@ body {
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 84px;
+  background-color: var(--site-bg);
 }
 
 @media (max-width: 768px) {
@@ -141,13 +152,18 @@ html {
 
 /* Glass Panel */
 .glass-panel {
-  background: var(--card);
+  background: var(--card-bg);
   border: 1px solid var(--card-border);
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
   border-radius: 1.5rem;
-  box-shadow: 0 18px 70px rgba(8, 47, 73, 0.35);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: var(--card-shadow);
+  transition: border-color 0.3s ease, transform 0.3s ease;
+}
+
+.glass-panel:hover {
+  border-color: var(--card-border-hover);
+  transform: translateY(-6px);
 }
 
 @media (max-width: 768px) {
@@ -172,12 +188,17 @@ html {
   inset: -1px;
   border-radius: inherit;
   padding: 1px;
-  background: linear-gradient(135deg, rgba(168, 85, 247, 0.8), rgba(14, 165, 233, 0.8));
+  background: rgba(255, 255, 255, 0);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   pointer-events: none;
+  transition: background 0.3s ease;
+}
+
+.gradient-border:hover::before {
+  background: rgba(255, 255, 255, 0.8);
 }
 
 /* Noise Overlay */
@@ -522,6 +543,7 @@ label {
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
+  background-color: var(--site-bg);
 }
 
 .section-title {
@@ -529,6 +551,7 @@ label {
   font-weight: 600;
   color: #fff;
   margin: 0;
+  background-color: var(--site-bg);
 }
 
 @media (max-width: 768px) {
@@ -546,6 +569,13 @@ label {
 @media (min-width: 768px) {
   .section-title {
     font-size: 2.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-header {
+    align-items: flex-start;
+    text-align: left;
   }
 }
 

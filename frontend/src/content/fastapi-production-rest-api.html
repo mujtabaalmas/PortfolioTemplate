@@ -1,0 +1,937 @@
+<article class="blog-post">
+  <header>
+    <h1>Building a Production-Ready REST API with FastAPI: Complete Guide with JWT Authentication and Docker</h1>
+    <p class="meta">Published: November 24, 2025 | Reading Time: 20 minutes</p>
+  </header>
+
+  <div class="post-content">
+    <p class="lead">FastAPI has revolutionized Python web development with its blazing speed, automatic documentation, and developer-friendly features. In this comprehensive guide, we'll build a production-ready REST API implementing full CRUD operations, JWT authentication, and containerization with Docker—covering everything from request/response models to error handling and deployment best practices.</p>
+
+    <h2>Why FastAPI for Production APIs?</h2>
+    <p>FastAPI has become the go-to framework for building modern Python APIs, and for good reason:</p>
+
+    <h3>Performance</h3>
+    <p>Built on Starlette and Pydantic, FastAPI delivers performance comparable to NodeJS and Go, making it one of the fastest Python frameworks available.</p>
+
+    <h3>Automatic Documentation</h3>
+    <p>FastAPI generates interactive API documentation (Swagger UI and ReDoc) automatically from your code, eliminating the need for manual documentation maintenance.</p>
+
+    <h3>Type Safety</h3>
+    <p>Leveraging Python's type hints, FastAPI provides excellent editor support, catches errors at development time, and ensures data validation automatically.</p>
+
+    <h3>Async Support</h3>
+    <p>First-class asynchronous capabilities enable efficient handling of I/O-bound operations and high-concurrency scenarios.</p>
+
+    <h3>Dependency Injection</h3>
+    <p>A powerful built-in dependency injection system simplifies authentication, database connections, and code organization.</p>
+
+    <h2>Project Overview: Task Management API</h2>
+    <p>We'll build a complete task management REST API featuring:</p>
+    <ul>
+      <li><strong>Full CRUD operations</strong> for tasks and users</li>
+      <li><strong>JWT-based authentication</strong> with secure password hashing</li>
+      <li><strong>Request/response validation</strong> using Pydantic models</li>
+      <li><strong>Pagination</strong> for large datasets</li>
+      <li><strong>Comprehensive error handling</strong> with custom exceptions</li>
+      <li><strong>Automatic OpenAPI documentation</strong></li>
+      <li><strong>Production-ready Docker deployment</strong></li>
+    </ul>
+
+    <h2>Setting Up the Project Structure</h2>
+    <p>A well-organized project structure is crucial for maintainability and scalability:</p>
+
+    <pre><code>fastapi-crud-api/
+├── app/
+│   ├── __init__.py
+│   ├── main.py              # Application entry point
+│   ├── config.py            # Configuration settings
+│   ├── database.py          # Database connection
+│   ├── models/
+│   │   ├── __init__.py
+│   │   ├── user.py          # User database model
+│   │   └── task.py          # Task database model
+│   ├── schemas/
+│   │   ├── __init__.py
+│   │   ├── user.py          # User Pydantic schemas
+│   │   ├── task.py          # Task Pydantic schemas
+│   │   └── auth.py          # Authentication schemas
+│   ├── routers/
+│   │   ├── __init__.py
+│   │   ├── auth.py          # Authentication endpoints
+│   │   ├── users.py         # User endpoints
+│   │   └── tasks.py         # Task endpoints
+│   ├── dependencies/
+│   │   ├── __init__.py
+│   │   └── auth.py          # Auth dependencies
+│   └── utils/
+│       ├── __init__.py
+│       ├── security.py      # Password hashing, JWT
+│       └── exceptions.py    # Custom exceptions
+├── tests/
+│   ├── __init__.py
+│   └── test_api.py
+├── .env                      # Environment variables
+├── requirements.txt
+├── Dockerfile
+├── docker-compose.yml
+└── README.md</code></pre>
+
+    <h2>Installation and Dependencies</h2>
+    <p>Create <code>requirements.txt</code> with essential dependencies:</p>
+
+    <pre><code>fastapi==0.109.0
+uvicorn[standard]==0.27.0
+sqlalchemy==2.0.25
+pydantic[email]==2.5.3
+pydantic-settings==2.1.0
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+python-multipart==0.0.6
+python-dotenv==1.0.0
+psycopg2-binary==2.9.9
+alembic==1.13.1</code></pre>
+
+    <p>Install dependencies:</p>
+    <pre><code class="language-bash">pip install -r requirements.txt</code></pre>
+
+    <h2>Configuration Management</h2>
+    <p>Create <code>app/config.py</code> for centralized configuration:</p>
+
+    <pre><code class="language-python">from pydantic_settings import BaseSettings
+from functools import lru_cache
+
+class Settings(BaseSettings):
+    # Application
+    APP_NAME: str = "Task Management API"
+    VERSION: str = "1.0.0"
+    DEBUG: bool = False
+    
+    # Database
+    DATABASE_URL: str = "postgresql://user:password@localhost:5432/taskdb"
+    
+    # JWT
+    SECRET_KEY: str = "your-secret-key-change-in-production"
+    ALGORITHM: str = "HS256"
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
+    REFRESH_TOKEN_EXPIRE_DAYS: int = 7
+    
+    # Pagination
+    DEFAULT_PAGE_SIZE: int = 10
+    MAX_PAGE_SIZE: int = 100
+    
+    class Config:
+        env_file = ".env"
+        case_sensitive = True
+
+@lru_cache()
+def get_settings() -> Settings:
+    return Settings()</code></pre>
+
+    <p>Create <code>.env</code> file:</p>
+    <pre><code>DATABASE_URL=postgresql://postgres:postgres@db:5432/taskdb
+SECRET_KEY=your-super-secret-key-change-this-in-production
+DEBUG=True</code></pre>
+
+    <h2>Database Setup with SQLAlchemy</h2>
+    <p>Configure database connection in <code>app/database.py</code>:</p>
+
+    <pre><code class="language-python">from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+from app.config import get_settings
+
+settings = get_settings()
+
+engine = create_engine(
+    settings.DATABASE_URL,
+    pool_pre_ping=True,
+    pool_size=10,
+    max_overflow=20
+)
+
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+Base = declarative_base()
+
+def get_db():
+    """Database session dependency"""
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()</code></pre>
+
+    <h2>Defining Database Models</h2>
+    <p>Create <code>app/models/user.py</code>:</p>
+
+    <pre><code class="language-python">from sqlalchemy import Column, Integer, String, Boolean, DateTime
+from sqlalchemy.orm import relationship
+from sqlalchemy.sql import func
+from app.database import Base
+
+class User(Base):
+    __tablename__ = "users"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    email = Column(String, unique=True, index=True, nullable=False)
+    username = Column(String, unique=True, index=True, nullable=False)
+    hashed_password = Column(String, nullable=False)
+    is_active = Column(Boolean, default=True)
+    is_superuser = Column(Boolean, default=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    
+    tasks = relationship("Task", back_populates="owner", cascade="all, delete-orphan")</code></pre>
+
+    <p>Create <code>app/models/task.py</code>:</p>
+
+    <pre><code class="language-python">from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, Text
+from sqlalchemy.orm import relationship
+from sqlalchemy.sql import func
+from app.database import Base
+
+class Task(Base):
+    __tablename__ = "tasks"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String(200), nullable=False, index=True)
+    description = Column(Text, nullable=True)
+    completed = Column(Boolean, default=False)
+    priority = Column(String(20), default="medium")
+    owner_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    
+    owner = relationship("User", back_populates="tasks")</code></pre>
+
+    <h2>Pydantic Schemas: Request/Response Models</h2>
+    <p>Pydantic models define data validation, serialization, and API documentation. Create <code>app/schemas/user.py</code>:</p>
+
+    <pre><code class="language-python">from pydantic import BaseModel, EmailStr, Field, ConfigDict
+from datetime import datetime
+from typing import Optional
+
+class UserBase(BaseModel):
+    email: EmailStr
+    username: str = Field(..., min_length=3, max_length=50)
+
+class UserCreate(UserBase):
+    password: str = Field(..., min_length=8, max_length=100)
+
+class UserUpdate(BaseModel):
+    email: Optional[EmailStr] = None
+    username: Optional[str] = Field(None, min_length=3, max_length=50)
+    password: Optional[str] = Field(None, min_length=8, max_length=100)
+
+class UserResponse(UserBase):
+    id: int
+    is_active: bool
+    created_at: datetime
+    
+    model_config = ConfigDict(from_attributes=True)
+
+class UserInDB(UserResponse):
+    hashed_password: str</code></pre>
+
+    <p>Create <code>app/schemas/task.py</code>:</p>
+
+    <pre><code class="language-python">from pydantic import BaseModel, Field, ConfigDict
+from datetime import datetime
+from typing import Optional
+from enum import Enum
+
+class PriorityEnum(str, Enum):
+    low = "low"
+    medium = "medium"
+    high = "high"
+
+class TaskBase(BaseModel):
+    title: str = Field(..., min_length=1, max_length=200)
+    description: Optional[str] = None
+    completed: bool = False
+    priority: PriorityEnum = PriorityEnum.medium
+
+class TaskCreate(TaskBase):
+    pass
+
+class TaskUpdate(BaseModel):
+    title: Optional[str] = Field(None, min_length=1, max_length=200)
+    description: Optional[str] = None
+    completed: Optional[bool] = None
+    priority: Optional[PriorityEnum] = None
+
+class TaskResponse(TaskBase):
+    id: int
+    owner_id: int
+    created_at: datetime
+    updated_at: Optional[datetime]
+    
+    model_config = ConfigDict(from_attributes=True)</code></pre>
+
+    <p>Create <code>app/schemas/auth.py</code> for authentication:</p>
+
+    <pre><code class="language-python">from pydantic import BaseModel
+from typing import Optional
+
+class Token(BaseModel):
+    access_token: str
+    refresh_token: str
+    token_type: str = "bearer"
+
+class TokenData(BaseModel):
+    username: Optional[str] = None
+
+class LoginRequest(BaseModel):
+    username: str
+    password: str</code></pre>
+
+    <h2>Security: Password Hashing and JWT Authentication</h2>
+    <p>Create <code>app/utils/security.py</code>:</p>
+
+    <pre><code class="language-python">from datetime import datetime, timedelta
+from typing import Optional
+from jose import JWTError, jwt
+from passlib.context import CryptContext
+from app.config import get_settings
+
+settings = get_settings()
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    """Verify a password against its hash"""
+    return pwd_context.verify(plain_password, hashed_password)
+
+def get_password_hash(password: str) -> str:
+    """Hash a password"""
+    return pwd_context.hash(password)
+
+def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:
+    """Create JWT access token"""
+    to_encode = data.copy()
+    
+    if expires_delta:
+        expire = datetime.utcnow() + expires_delta
+    else:
+        expire = datetime.utcnow() + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+    
+    to_encode.update({"exp": expire, "type": "access"})
+    encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
+    return encoded_jwt
+
+def create_refresh_token(data: dict) -> str:
+    """Create JWT refresh token"""
+    to_encode = data.copy()
+    expire = datetime.utcnow() + timedelta(days=settings.REFRESH_TOKEN_EXPIRE_DAYS)
+    to_encode.update({"exp": expire, "type": "refresh"})
+    encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
+    return encoded_jwt
+
+def decode_token(token: str) -> dict:
+    """Decode and validate JWT token"""
+    try:
+        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+        return payload
+    except JWTError:
+        return None</code></pre>
+
+    <h2>Custom Exception Handling</h2>
+    <p>Create <code>app/utils/exceptions.py</code>:</p>
+
+    <pre><code class="language-python">from fastapi import HTTPException, status
+
+class NotFoundException(HTTPException):
+    def __init__(self, detail: str = "Resource not found"):
+        super().__init__(status_code=status.HTTP_404_NOT_FOUND, detail=detail)
+
+class UnauthorizedException(HTTPException):
+    def __init__(self, detail: str = "Could not validate credentials"):
+        super().__init__(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=detail,
+            headers={"WWW-Authenticate": "Bearer"}
+        )
+
+class ForbiddenException(HTTPException):
+    def __init__(self, detail: str = "Not enough permissions"):
+        super().__init__(status_code=status.HTTP_403_FORBIDDEN, detail=detail)
+
+class BadRequestException(HTTPException):
+    def __init__(self, detail: str = "Bad request"):
+        super().__init__(status_code=status.HTTP_400_BAD_REQUEST, detail=detail)
+
+class ConflictException(HTTPException):
+    def __init__(self, detail: str = "Resource already exists"):
+        super().__init__(status_code=status.HTTP_409_CONFLICT, detail=detail)</code></pre>
+
+    <h2>Dependency Injection: Authentication</h2>
+    <p>Create <code>app/dependencies/auth.py</code>:</p>
+
+    <pre><code class="language-python">from fastapi import Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordBearer
+from sqlalchemy.orm import Session
+from jose import JWTError
+from app.database import get_db
+from app.models.user import User
+from app.utils.security import decode_token
+from app.utils.exceptions import UnauthorizedException
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login")
+
+async def get_current_user(
+    token: str = Depends(oauth2_scheme),
+    db: Session = Depends(get_db)
+) -> User:
+    """Get current authenticated user"""
+    
+    payload = decode_token(token)
+    if payload is None:
+        raise UnauthorizedException("Invalid authentication credentials")
+    
+    username: str = payload.get("sub")
+    if username is None:
+        raise UnauthorizedException("Invalid token payload")
+    
+    user = db.query(User).filter(User.username == username).first()
+    if user is None:
+        raise UnauthorizedException("User not found")
+    
+    if not user.is_active:
+        raise UnauthorizedException("Inactive user")
+    
+    return user
+
+async def get_current_active_user(
+    current_user: User = Depends(get_current_user)
+) -> User:
+    """Ensure user is active"""
+    if not current_user.is_active:
+        raise HTTPException(status_code=400, detail="Inactive user")
+    return current_user</code></pre>
+
+    <h2>Pagination Implementation</h2>
+    <p>Create pagination utilities in <code>app/schemas/pagination.py</code>:</p>
+
+    <pre><code class="language-python">from typing import Generic, List, TypeVar
+from pydantic import BaseModel, Field, ConfigDict
+from math import ceil
+
+T = TypeVar("T")
+
+class PageParams(BaseModel):
+    page: int = Field(1, ge=1, description="Page number")
+    size: int = Field(10, ge=1, le=100, description="Items per page")
+
+class PageResponse(BaseModel, Generic[T]):
+    """Paginated response model"""
+    items: List[T]
+    total: int
+    page: int
+    size: int
+    pages: int
+    
+    model_config = ConfigDict(from_attributes=True)
+
+def paginate(query, page_params: PageParams, response_model):
+    """Apply pagination to SQLAlchemy query"""
+    total = query.count()
+    pages = ceil(total / page_params.size)
+    
+    items = query.offset(
+        (page_params.page - 1) * page_params.size
+    ).limit(page_params.size).all()
+    
+    return PageResponse(
+        items=[response_model.model_validate(item) for item in items],
+        total=total,
+        page=page_params.page,
+        size=page_params.size,
+        pages=pages
+    )</code></pre>
+
+    <h2>Authentication Router</h2>
+    <p>Create <code>app/routers/auth.py</code>:</p>
+
+    <pre><code class="language-python">from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordRequestForm
+from sqlalchemy.orm import Session
+from app.database import get_db
+from app.models.user import User
+from app.schemas.auth import Token, LoginRequest
+from app.schemas.user import UserCreate, UserResponse
+from app.utils.security import (
+    verify_password,
+    get_password_hash,
+    create_access_token,
+    create_refresh_token
+)
+from app.utils.exceptions import UnauthorizedException, ConflictException
+
+router = APIRouter(prefix="/api/auth", tags=["Authentication"])
+
+@router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
+def register(user_data: UserCreate, db: Session = Depends(get_db)):
+    """Register a new user"""
+    
+    # Check if user already exists
+    if db.query(User).filter(User.email == user_data.email).first():
+        raise ConflictException("Email already registered")
+    
+    if db.query(User).filter(User.username == user_data.username).first():
+        raise ConflictException("Username already taken")
+    
+    # Create new user
+    hashed_password = get_password_hash(user_data.password)
+    db_user = User(
+        email=user_data.email,
+        username=user_data.username,
+        hashed_password=hashed_password
+    )
+    
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    
+    return db_user
+
+@router.post("/login", response_model=Token)
+def login(
+    form_data: OAuth2PasswordRequestForm = Depends(),
+    db: Session = Depends(get_db)
+):
+    """Authenticate user and return JWT tokens"""
+    
+    user = db.query(User).filter(User.username == form_data.username).first()
+    
+    if not user or not verify_password(form_data.password, user.hashed_password):
+        raise UnauthorizedException("Incorrect username or password")
+    
+    if not user.is_active:
+        raise UnauthorizedException("Inactive user account")
+    
+    # Create tokens
+    access_token = create_access_token(data={"sub": user.username})
+    refresh_token = create_refresh_token(data={"sub": user.username})
+    
+    return Token(
+        access_token=access_token,
+        refresh_token=refresh_token,
+        token_type="bearer"
+    )</code></pre>
+
+    <h2>CRUD Operations: Tasks Router</h2>
+    <p>Create <code>app/routers/tasks.py</code>:</p>
+
+    <pre><code class="language-python">from fastapi import APIRouter, Depends, status
+from sqlalchemy.orm import Session
+from typing import List
+from app.database import get_db
+from app.models.task import Task
+from app.models.user import User
+from app.schemas.task import TaskCreate, TaskUpdate, TaskResponse
+from app.schemas.pagination import PageParams, PageResponse, paginate
+from app.dependencies.auth import get_current_active_user
+from app.utils.exceptions import NotFoundException, ForbiddenException
+
+router = APIRouter(prefix="/api/tasks", tags=["Tasks"])
+
+@router.post("/", response_model=TaskResponse, status_code=status.HTTP_201_CREATED)
+def create_task(
+    task_data: TaskCreate,
+    current_user: User = Depends(get_current_active_user),
+    db: Session = Depends(get_db)
+):
+    """Create a new task"""
+    
+    db_task = Task(
+        **task_data.model_dump(),
+        owner_id=current_user.id
+    )
+    
+    db.add(db_task)
+    db.commit()
+    db.refresh(db_task)
+    
+    return db_task
+
+@router.get("/", response_model=PageResponse[TaskResponse])
+def list_tasks(
+    page_params: PageParams = Depends(),
+    completed: bool = None,
+    current_user: User = Depends(get_current_active_user),
+    db: Session = Depends(get_db)
+):
+    """List all tasks for current user with pagination"""
+    
+    query = db.query(Task).filter(Task.owner_id == current_user.id)
+    
+    # Apply filters
+    if completed is not None:
+        query = query.filter(Task.completed == completed)
+    
+    query = query.order_by(Task.created_at.desc())
+    
+    return paginate(query, page_params, TaskResponse)
+
+@router.get("/{task_id}", response_model=TaskResponse)
+def get_task(
+    task_id: int,
+    current_user: User = Depends(get_current_active_user),
+    db: Session = Depends(get_db)
+):
+    """Get a specific task by ID"""
+    
+    task = db.query(Task).filter(Task.id == task_id).first()
+    
+    if not task:
+        raise NotFoundException(f"Task with id {task_id} not found")
+    
+    if task.owner_id != current_user.id:
+        raise ForbiddenException("Not authorized to access this task")
+    
+    return task
+
+@router.put("/{task_id}", response_model=TaskResponse)
+def update_task(
+    task_id: int,
+    task_data: TaskUpdate,
+    current_user: User = Depends(get_current_active_user),
+    db: Session = Depends(get_db)
+):
+    """Update an existing task"""
+    
+    task = db.query(Task).filter(Task.id == task_id).first()
+    
+    if not task:
+        raise NotFoundException(f"Task with id {task_id} not found")
+    
+    if task.owner_id != current_user.id:
+        raise ForbiddenException("Not authorized to modify this task")
+    
+    # Update only provided fields
+    update_data = task_data.model_dump(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(task, key, value)
+    
+    db.commit()
+    db.refresh(task)
+    
+    return task
+
+@router.delete("/{task_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_task(
+    task_id: int,
+    current_user: User = Depends(get_current_active_user),
+    db: Session = Depends(get_db)
+):
+    """Delete a task"""
+    
+    task = db.query(Task).filter(Task.id == task_id).first()
+    
+    if not task:
+        raise NotFoundException(f"Task with id {task_id} not found")
+    
+    if task.owner_id != current_user.id:
+        raise ForbiddenException("Not authorized to delete this task")
+    
+    db.delete(task)
+    db.commit()
+    
+    return None</code></pre>
+
+    <h2>Main Application Setup</h2>
+    <p>Create <code>app/main.py</code>:</p>
+
+    <pre><code class="language-python">from fastapi import FastAPI, Request, status
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy.exc import SQLAlchemyError
+from app.config import get_settings
+from app.database import engine, Base
+from app.routers import auth, tasks
+import logging
+
+settings = get_settings()
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# Create database tables
+Base.metadata.create_all(bind=engine)
+
+# Initialize FastAPI app
+app = FastAPI(
+    title=settings.APP_NAME,
+    version=settings.VERSION,
+    description="A production-ready REST API with JWT authentication",
+    docs_url="/api/docs",
+    redoc_url="/api/redoc",
+    openapi_url="/api/openapi.json"
+)
+
+# CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Configure appropriately for production
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Include routers
+app.include_router(auth.router)
+app.include_router(tasks.router)
+
+# Global exception handlers
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    """Handle validation errors"""
+    logger.error(f"Validation error: {exc.errors()}")
+    return JSONResponse(
+        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        content={
+            "detail": exc.errors(),
+            "message": "Validation error"
+        }
+    )
+
+@app.exception_handler(SQLAlchemyError)
+async def database_exception_handler(request: Request, exc: SQLAlchemyError):
+    """Handle database errors"""
+    logger.error(f"Database error: {str(exc)}")
+    return JSONResponse(
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        content={"detail": "Database error occurred"}
+    )
+
+@app.exception_handler(Exception)
+async def general_exception_handler(request: Request, exc: Exception):
+    """Handle unexpected errors"""
+    logger.error(f"Unexpected error: {str(exc)}", exc_info=True)
+    return JSONResponse(
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        content={"detail": "Internal server error"}
+    )
+
+@app.get("/", tags=["Health"])
+def health_check():
+    """API health check endpoint"""
+    return {
+        "status": "healthy",
+        "version": settings.VERSION,
+        "app": settings.APP_NAME
+    }
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(
+        "app.main:app",
+        host="0.0.0.0",
+        port=8000,
+        reload=settings.DEBUG
+    )</code></pre>
+
+    <h2>Docker Deployment</h2>
+    <p>Create <code>Dockerfile</code>:</p>
+
+    <pre><code class="language-dockerfile">FROM python:3.11-slim
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    postgresql-client \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements and install Python dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
+
+# Copy application code
+COPY ./app /app/app
+
+# Create non-root user
+RUN useradd -m -u 1000 appuser && chown -R appuser:appuser /app
+USER appuser
+
+# Expose port
+EXPOSE 8000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD python -c "import requests; requests.get('http://localhost:8000/')"
+
+# Run with Gunicorn for production
+CMD ["gunicorn", "app.main:app", \
+     "--workers", "4", \
+     "--worker-class", "uvicorn.workers.UvicornWorker", \
+     "--bind", "0.0.0.0:8000", \
+     "--access-logfile", "-", \
+     "--error-logfile", "-"]</code></pre>
+
+    <p>Create <code>docker-compose.yml</code>:</p>
+
+    <pre><code class="language-yaml">version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: taskdb
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/taskdb
+      - SECRET_KEY=your-production-secret-key
+      - DEBUG=False
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./app:/app/app
+    restart: unless-stopped
+
+volumes:
+  postgres_data:</code></pre>
+
+    <h2>Running the Application</h2>
+    
+    <h3>Development mode:</h3>
+    <pre><code class="language-bash"># Install dependencies
+pip install -r requirements.txt
+
+# Run with auto-reload
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000</code></pre>
+
+    <h3>Docker deployment:</h3>
+    <pre><code class="language-bash"># Build and start services
+docker-compose up --build
+
+# Run in detached mode
+docker-compose up -d
+
+# View logs
+docker-compose logs -f api
+
+# Stop services
+docker-compose down</code></pre>
+
+    <h2>Testing the API</h2>
+    <p>Access interactive documentation at <code>http://localhost:8000/api/docs</code>.</p>
+
+    <h3>Example API workflow:</h3>
+    <pre><code class="language-bash"># 1. Register a new user
+curl -X POST "http://localhost:8000/api/auth/register" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "user@example.com",
+    "username": "testuser",
+    "password": "SecurePass123"
+  }'
+
+# 2. Login to get access token
+curl -X POST "http://localhost:8000/api/auth/login" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "username=testuser&password=SecurePass123"
+
+# Response: {"access_token": "eyJ...", "token_type": "bearer"}
+
+# 3. Create a task (use token from step 2)
+curl -X POST "http://localhost:8000/api/tasks/" \
+  -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Complete project documentation",
+    "description": "Write comprehensive API docs",
+    "priority": "high"
+  }'
+
+# 4. List tasks with pagination
+curl -X GET "http://localhost:8000/api/tasks/?page=1&size=10" \
+  -H "Authorization: Bearer YOUR_ACCESS_TOKEN"
+
+# 5. Update a task
+curl -X PUT "http://localhost:8000/api/tasks/1" \
+  -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"completed": true}'
+
+# 6. Delete a task
+curl -X DELETE "http://localhost:8000/api/tasks/1" \
+  -H "Authorization: Bearer YOUR_ACCESS_TOKEN"</code></pre>
+
+    <h2>Production Best Practices</h2>
+
+    <h3>Security</h3>
+    <ul>
+      <li>Use strong, unique <code>SECRET_KEY</code> (generate with <code>openssl rand -hex 32</code>)</li>
+      <li>Enable HTTPS with proper TLS certificates</li>
+      <li>Implement rate limiting to prevent abuse</li>
+      <li>Use environment variables for sensitive configuration</li>
+      <li>Regularly update dependencies for security patches</li>
+      <li>Implement proper CORS policies</li>
+      <li>Add request size limits</li>
+    </ul>
+
+    <h3>Performance</h3>
+    <ul>
+      <li>Use connection pooling for database efficiency</li>
+      <li>Implement caching strategies (Redis) for frequently accessed data</li>
+      <li>Enable Gzip compression for responses</li>
+      <li>Use async database drivers (asyncpg for PostgreSQL)</li>
+      <li>Configure appropriate worker processes with Gunicorn</li>
+      <li>Monitor and optimize slow queries</li>
+    </ul>
+
+    <h3>Monitoring and Logging</h3>
+    <ul>
+      <li>Implement structured logging with correlation IDs</li>
+      <li>Use application performance monitoring (APM) tools</li>
+      <li>Set up health check endpoints</li>
+      <li>Track key metrics (response time, error rates, throughput)</li>
+      <li>Configure log aggregation for production environments</li>
+    </ul>
+
+    <h3>Database Management</h3>
+    <ul>
+      <li>Use Alembic for database migrations</li>
+      <li>Implement database backups and recovery procedures</li>
+      <li>Use read replicas for scaling read operations</li>
+      <li>Optimize indexes for common queries</li>
+    </ul>
+
+    <h2>Conclusion</h2>
+    <p>You've now built a production-ready REST API with FastAPI featuring:</p>
+
+    <ul class="checklist">
+      <li>✅ <strong>Complete CRUD operations</strong> with proper data validation</li>
+      <li>✅ <strong>JWT authentication</strong> with secure password handling</li>
+      <li>✅ <strong>Dependency injection</strong> for clean, testable code</li>
+      <li>✅ <strong>Pagination</strong> for efficient data retrieval</li>
+      <li>✅ <strong>Comprehensive error handling</strong> with custom exceptions</li>
+      <li>✅ <strong>Automatic OpenAPI documentation</strong></li>
+      <li>✅ <strong>Docker containerization</strong> for consistent deployments</li>
+    </ul>
+
+    <p>This architecture provides a solid foundation for building scalable, maintainable APIs. FastAPI's automatic documentation, type safety, and performance characteristics make it an excellent choice for modern Python API development.</p>
+
+    <p>The patterns demonstrated here—structured project layout, dependency injection, custom exception handling, and pagination—represent industry best practices that will serve you well as your application grows. Whether you're building a startup MVP or an enterprise system, this FastAPI foundation provides the reliability and developer experience needed for production success.</p>
+  </div>
+</article>

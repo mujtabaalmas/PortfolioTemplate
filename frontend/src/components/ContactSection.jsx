@@ -1,7 +1,7 @@
 const ContactSection = ({ formStatus, isSubmitting, onSubmit }) => (
   <section id="contact" className="section-padding contact-section">
     <div className="contact-header">
-      <h2>Ship the next platform together</h2>
+      <h2>Contact Me</h2>
     </div>
     <div className="contact-grid">
       <div className="glass-panel p-8 contact-form-card">
