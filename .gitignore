@@ -50,4 +50,3 @@ Thumbs.db
 backend/
 frontend-legacy/
 # for main 
-netlify.toml
