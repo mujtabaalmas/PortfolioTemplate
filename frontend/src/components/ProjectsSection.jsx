@@ -1,11 +1,7 @@
 const ProjectsSection = ({ projects }) => (
   <section id="projects" className="section-padding">
     <div className="section-header">
-      <span className="section-eyebrow">Selected Work</span>
       <h2 className="section-title">Backends built for real-world scale</h2>
-      <p className="section-description">
-        Snapshots from recent API platforms, data products, and infrastructure accelerators.
-      </p>
     </div>
     <div id="projects-grid" className="grid grid-2 mt-12">
       {projects.map((project, index) => (

@@ -12,13 +12,7 @@ import SkillsPage from './pages/SkillsPage'
 import ProjectsPage from './pages/ProjectsPage'
 import ExperiencePage from './pages/ExperiencePage'
 import ContactPage from './pages/ContactPage'
-import {
-  CONTACT_DETAILS,
-  CONTACT_LINKS,
-  FALLBACK_PROJECTS,
-  FALLBACK_SKILLS,
-  SLIDER_ITEMS
-} from './constants/content'
+import { FALLBACK_PROJECTS, FALLBACK_SKILLS, SLIDER_ITEMS } from './constants/content'
 import './App.css'
 
 const FETCH_TIMEOUT = 5000
@@ -151,8 +145,6 @@ function App() {
                 formStatus={formStatus}
                 isSubmitting={isSubmitting}
                 onSubmit={handleContactSubmit}
-                contactLinks={CONTACT_LINKS}
-                contactDetails={CONTACT_DETAILS}
               />
             }
           />
@@ -166,8 +158,6 @@ function App() {
                 formStatus={formStatus}
                 isSubmitting={isSubmitting}
                 onSubmit={handleContactSubmit}
-                contactLinks={CONTACT_LINKS}
-                contactDetails={CONTACT_DETAILS}
               />
             }
           />

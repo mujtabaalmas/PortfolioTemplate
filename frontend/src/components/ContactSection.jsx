@@ -1,12 +1,15 @@
-const ContactSection = ({ formStatus, isSubmitting, onSubmit, contactLinks, contactDetails }) => (
-  <section id="contact" className="section-padding">
-    <div className="section-header">
-      <span className="section-eyebrow">Connect</span>
-      <h2 className="section-title">Ship the next platform together</h2>
-      <p className="section-description">Open for backend leadership, consulting, or fractional platform work.</p>
+const ContactSection = ({ formStatus, isSubmitting, onSubmit }) => (
+  <section id="contact" className="section-padding contact-section">
+    <div className="contact-header">
+      <h2>Ship the next platform together</h2>
     </div>
-    <div className="contact-grid mt-12">
+    <div className="contact-grid">
       <div className="glass-panel p-8 contact-form-card">
+        <div className="contact-form-header">
+          <p className="contact-form-label">Project brief</p>
+          <h3>Tell me about the challenge</h3>
+          <p>Share the problem space, timelines, and any must-have integrations.</p>
+        </div>
         <form id="contact-form" onSubmit={onSubmit}>
           <div className="form-row">
             <div className="form-group">
@@ -36,30 +39,48 @@ const ContactSection = ({ formStatus, isSubmitting, onSubmit, contactLinks, cont
         </form>
       </div>
       <div className="contact-sidebar">
-        <div className="glass-panel p-8 contact-details-card">
-          <p className="contact-details-label">DETAILS</p>
-          <div className="contact-details">
-            {contactDetails.map((detail) => (
-              <p key={detail.label} className="contact-detail-item">
-                <svg className="icon-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={detail.iconPath} />
-                </svg>
-                {detail.label}
-              </p>
-            ))}
+        <div className="glass-panel p-6 contact-profile-card">
+          <div className="contact-profile">
+            <div className="contact-profile-avatar">
+              <img src="/assets/logo.png" alt="Mujtaba Almas avatar" />
+            </div>
+            <div>
+              <p className="contact-profile-eyebrow">Available for hire</p>
+              <h3>Mujtaba Almas</h3>
+              <p className="contact-profile-role">Python Backend Developer</p>
+            </div>
+          </div>
+          <div className="contact-profile-meta">
+            <span>SSA Soft</span>
+            <span>Responds in &lt; 24h</span>
+          </div>
+          <div className="contact-profile-tags">
+            <span>Python Programming</span>
+            <span>REST API</span>
+            <span>API Design</span>
           </div>
         </div>
-        <div className="glass-panel p-8 contact-links-card mt-6">
-          <p className="contact-links-label">LINKS</p>
+        <div className="glass-panel p-6 contact-links-card">
+          <p className="contact-links-label">Ways to reach me</p>
           <ul className="contact-links">
-            {contactLinks.map((link) => (
-              <li key={link.label}>
-                <a href={link.href} target="_blank" rel="noopener noreferrer" className="contact-link">
-                  <span>{link.label}</span>
-                  <span className="contact-link-value">{link.value}</span>
-                </a>
-              </li>
-            ))}
+            <li>
+              <a className="contact-link" href="mailto:insights.mujtaba@gmail.com">
+                <span>Email</span>
+                <span className="contact-link-value">insights.mujtaba@gmail.com</span>
+              </a>
+            </li>
+            <li>
+              <a className="contact-link" href="https://linkedin.com/in/mujtabaalmas" target="_blank" rel="noopener noreferrer">
+                <span>LinkedIn</span>
+                <span className="contact-link-value">/in/mujtabaalmas</span>
+              </a>
+            </li>
+            <li>
+              <a className="contact-link" href="https://github.com/mujtabaalmas" target="_blank" rel="noopener noreferrer">
+                <span>GitHub</span>
+                <span className="contact-link-value">@mujtabaalmas</span>
+              </a>
+            </li>
           </ul>
         </div>
       </div>

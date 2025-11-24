@@ -59,8 +59,8 @@ export const EXPERIENCE_ITEMS = [
     role: 'Python Backend Developer · SSA Soft',
     summary: 'Developing core APIs and resilience initiatives for Industry Level Softwares.',
     highlights: [
-      'Scaled multi-tenant ingestion services to 5B events/day',
-      'Rolled out zero-downtime deploy process using blue/green'
+      'Design And Developed REST APIs in FASTAPI',
+      'Build scalable & secure backend and RESTful APIs using Django.'
     ]
   },
   {

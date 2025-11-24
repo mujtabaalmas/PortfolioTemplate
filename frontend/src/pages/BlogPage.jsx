@@ -6,11 +6,7 @@ const BlogPage = () => (
     <main className="space-y-12">
       <section className="section-padding">
         <div className="section-header">
-          <span className="section-eyebrow">Writing</span>
           <h1 className="section-title">All posts, one home</h1>
-          <p className="section-description">
-            A consistent layout for architecture notes, platform learnings, and ops retrospectives.
-          </p>
         </div>
 
         <div className="grid grid-3 mt-12">

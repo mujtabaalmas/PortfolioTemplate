@@ -3,9 +3,7 @@ import { BLOG_POSTS } from '../constants/content'
 const BlogSection = () => (
   <section id="blog" className="section-padding">
     <div className="section-header">
-      <span className="section-eyebrow">Writing</span>
       <h2 className="section-title">Notes from the backend lab</h2>
-      <p className="section-description">Architecture experiments, incident reviews, and practical playbooks.</p>
     </div>
     <div className="grid grid-3 mt-12">
       {BLOG_POSTS.map((post, index) => (
