@@ -24,6 +24,7 @@ body {
   font-family: 'Space Grotesk', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
   min-height: 100vh;
   line-height: 1.6;
+  scroll-behavior: smooth;
 }
 
 ::selection {

@@ -87,6 +87,7 @@ const ICON_MAP = {
 
 const Navbar = () => {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [hasScrolled, setHasScrolled] = useState(false)
   const bodyScrollStyles = useRef({ overflow: '', paddingRight: '' })
   const navigate = useNavigate()
   const location = useLocation()
@@ -133,6 +134,18 @@ const Navbar = () => {
 
   const closeMobileMenu = () => setMobileMenuOpen(false)
 
+  useEffect(() => {
+    if (typeof window === 'undefined') return undefined
+
+    const handleScroll = () => {
+      setHasScrolled(window.scrollY > 10)
+    }
+
+    handleScroll()
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
   const handleBrandClick = (event) => {
     event.preventDefault()
     closeMobileMenu()
@@ -159,7 +172,7 @@ const Navbar = () => {
   }
 
   return (
-    <nav className="navbar">
+    <nav className={`navbar ${hasScrolled ? 'navbar-scrolled' : ''}`}>
       <div className="navbar-floating">
         <Link to="/" className="navbar-brand" aria-label="Go to home" onClick={handleBrandClick}>
           <img src="/assets/logo.png" alt="Mujtaba logo" className="brand-logo" />
@@ -189,6 +202,8 @@ const Navbar = () => {
           className={`navbar-toggle ${isMobileMenuOpen ? 'active' : ''}`}
           type="button"
           aria-label="Toggle menu"
+          aria-expanded={isMobileMenuOpen}
+          aria-controls="primary-mobile-menu"
           onClick={() => setMobileMenuOpen((prev) => !prev)}
         >
           <span className="hamburger-line" />
@@ -197,7 +212,11 @@ const Navbar = () => {
         </button>
       </div>
 
-      <div className={`mobile-menu ${isMobileMenuOpen ? 'active' : ''}`} onClick={closeMobileMenu}>
+      <div
+        id="primary-mobile-menu"
+        className={`mobile-menu ${isMobileMenuOpen ? 'active' : ''}`}
+        onClick={closeMobileMenu}
+      >
         <div className="mobile-menu-content" onClick={(event) => event.stopPropagation()}>
           {NAV_LINKS.map((link) => (
             <button
