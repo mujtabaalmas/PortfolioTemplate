@@ -4,54 +4,73 @@
     <loc>https://mujtabaalmas.me/</loc>
     <priority>1.0</priority>
     <changefreq>weekly</changefreq>
-    <lastmod>2025-11-19</lastmod>
+    <lastmod>2025-11-25</lastmod>
   </url>
   <url>
     <loc>https://mujtabaalmas.me/skills</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
-    <lastmod>2025-11-19</lastmod>
+    <lastmod>2025-11-25</lastmod>
   </url>
   <url>
     <loc>https://mujtabaalmas.me/projects</loc>
     <priority>0.85</priority>
     <changefreq>monthly</changefreq>
-    <lastmod>2025-11-19</lastmod>
+    <lastmod>2025-11-25</lastmod>
   </url>
   <url>
     <loc>https://mujtabaalmas.me/experience</loc>
     <priority>0.75</priority>
     <changefreq>monthly</changefreq>
-    <lastmod>2025-11-19</lastmod>
+    <lastmod>2025-11-25</lastmod>
   </url>
   <url>
     <loc>https://mujtabaalmas.me/blog</loc>
     <priority>0.8</priority>
     <changefreq>weekly</changefreq>
-    <lastmod>2025-11-19</lastmod>
+    <lastmod>2025-11-25</lastmod>
+  </url>
+  <!-- Blog Posts -->
+  <url>
+    <loc>https://mujtabaalmas.me/blog/building-production-ready-fastapi-rest-api</loc>
+    <priority>0.75</priority>
+    <changefreq>monthly</changefreq>
+    <lastmod>2025-11-25</lastmod>
+  </url>
+  <url>
+    <loc>https://mujtabaalmas.me/blog/sqlalchemy-and-sqlmodel-guide-fastapi-django</loc>
+    <priority>0.75</priority>
+    <changefreq>monthly</changefreq>
+    <lastmod>2025-11-25</lastmod>
+  </url>
+  <url>
+    <loc>https://mujtabaalmas.me/blog/background-tasks-workers-celery-dramatiq-huey</loc>
+    <priority>0.75</priority>
+    <changefreq>monthly</changefreq>
+    <lastmod>2025-11-25</lastmod>
   </url>
   <url>
     <loc>https://mujtabaalmas.me/contact</loc>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
-    <lastmod>2025-11-19</lastmod>
+    <lastmod>2025-11-25</lastmod>
   </url>
   <url>
     <loc>https://mujtabaalmas.me/terms</loc>
     <priority>0.4</priority>
     <changefreq>yearly</changefreq>
-    <lastmod>2025-11-18</lastmod>
+    <lastmod>2025-11-25</lastmod>
   </url>
   <url>
     <loc>https://mujtabaalmas.me/privacy</loc>
     <priority>0.4</priority>
     <changefreq>yearly</changefreq>
-    <lastmod>2025-11-18</lastmod>
+    <lastmod>2025-11-25</lastmod>
   </url>
   <url>
     <loc>https://mujtabaalmas.me/cookies</loc>
     <priority>0.4</priority>
     <changefreq>yearly</changefreq>
-    <lastmod>2025-11-18</lastmod>
+    <lastmod>2025-11-25</lastmod>
   </url>
 </urlset>

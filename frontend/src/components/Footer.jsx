@@ -1,4 +1,5 @@
 import { memo } from 'react'
+import { Link } from 'react-router-dom'
 import { CONTACT_LINKS } from '../constants/content'
 
 const SOCIAL_ICONS = {
@@ -47,6 +48,13 @@ const Footer = () => (
           </a>
         ))}
       </div>
+    </div>
+    <div className="footer-legal">
+      <Link to="/terms" className="footer-legal-link">Terms</Link>
+      <span className="footer-legal-divider">·</span>
+      <Link to="/privacy" className="footer-legal-link">Privacy Policy</Link>
+      <span className="footer-legal-divider">·</span>
+      <Link to="/cookies" className="footer-legal-link">Cookies</Link>
     </div>
   </footer>
 )
