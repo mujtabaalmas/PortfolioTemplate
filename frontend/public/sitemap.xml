@@ -30,7 +30,6 @@
     <changefreq>weekly</changefreq>
     <lastmod>2025-11-25</lastmod>
   </url>
-  <!-- Blog Posts -->
   <url>
     <loc>https://mujtabaalmas.me/blog/building-production-ready-fastapi-rest-api</loc>
     <priority>0.75</priority>
