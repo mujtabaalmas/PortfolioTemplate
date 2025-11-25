@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { Link } from 'react-router-dom'
 import { BLOG_POSTS } from '../constants/content'
 
@@ -31,4 +32,4 @@ const BlogSection = () => (
   </section>
 )
 
-export default BlogSection
+export default memo(BlogSection)

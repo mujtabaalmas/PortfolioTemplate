@@ -77,6 +77,23 @@ export const EXPERIENCE_ITEMS = [
   }
 ]
 
+/**
+ * Blog post definitions
+ * 
+ * To add a new blog post:
+ * 1. Add your HTML file to src/content/ folder
+ * 2. Add metadata entry here with:
+ *    - slug: URL-friendly identifier (e.g., 'my-post-title')
+ *    - category: Post category (e.g., 'FASTAPI', 'DJANGO', 'BACKEND')
+ *    - title: Full post title
+ *    - excerpt: Brief description (1-2 sentences)
+ *    - date: Publication date
+ *    - readTime: Estimated reading time
+ *    - intro: Opening paragraph/hook
+ *    - htmlFile: Filename in content folder
+ * 
+ * The HTML content will be automatically imported and processed.
+ */
 const htmlPostDefinitions = [
   {
     slug: 'building-production-ready-fastapi-rest-api',
@@ -99,15 +116,75 @@ const htmlPostDefinitions = [
     intro:
       'Working with databases in Python web development has evolved significantly, with powerful ORM tools transforming how developers interact with data.',
     htmlFile: 'sqlalchemy-sqlmodel-guide.html'
+  },
+  {
+    slug: 'background-tasks-workers-celery-dramatiq-huey',
+    category: 'ASYNC',
+    title: 'Background Tasks & Workers: Celery vs Dramatiq vs Huey',
+    excerpt: 'A comprehensive guide to asynchronous task processing in Python with practical examples.',
+    date: 'Nov 2025',
+    readTime: '22 min read',
+    intro:
+      'Learn how to build scalable Python applications with background task processing using Celery, Dramatiq, and Huey.',
+    htmlFile: 'background-tasks-workers.html'
   }
 ]
+
+//  slugified ids and anchor links to all headings (h1-h6).
+const stripTags = (str) => str.replace(/<[^>]*>/g, '')
+const slugify = (text, used = new Set()) => {
+  const base = (text || '')
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/(^-|-$)/g, '')
+  let slug = base || 'heading'
+  let i = 1
+  while (used.has(slug)) {
+    slug = `${base}-${i}`
+    i += 1
+  }
+  used.add(slug)
+  return slug
+}
+
+const addHeadingAnchors = (html) => {
+  if (!html || typeof html !== 'string') return html
+  const used = new Set()
+  // Replace each heading tag with id and an inner anchor link.
+  return html.replace(/<(h[1-6])([^>]*)>([\s\S]*?)<\/\1>/gi, (match, tag, attrs, inner) => {
+    // If the heading already contains an anchor linking to an id, leave it
+    if (/class=["']?heading-link["']?/i.test(match) || /<a[^>]+href=['"]?#/i.test(inner)) {
+      return match
+    }
+    // Try to extract existing id from attrs
+    const idMatch = attrs && attrs.match(/id=["']?([^"'\s>]+)/i)
+    const text = stripTags(inner).trim()
+    const id = idMatch ? idMatch[1] : slugify(text, used)
+    const cleanAttrs = attrs.replace(/\s*id=["']?([^"'\s>]+)["']?/i, '')
+    return `<${tag} id="${id}"${cleanAttrs}>` + `<a class="heading-link" href="#${id}">${inner}</a></${tag}>`
+  })
+}
+
+const addCopyButtonsToPre = (html) => {
+  if (!html || typeof html !== 'string') return html
+  // Inject a copy button into each <pre> element if not already present
+  return html.replace(/<pre\b([^>]*)>([\s\S]*?)<\/pre>/gi, (match, attrs, inner) => {
+    if (/class=["']?copy-code-button["']?/i.test(match) || /copy-code-button/i.test(inner)) return match
+    return `<pre${attrs}>${inner}<button type="button" class="copy-code-button">Copy</button></pre>`
+  })
+}
 
 export const BLOG_POSTS = htmlPostDefinitions
   .map((post) => {
     const htmlKey = `../content/${post.htmlFile}`
+    const raw = htmlModules[htmlKey] || ''
     return {
       ...post,
-      html: htmlModules[htmlKey] || ''
+      html: addCopyButtonsToPre(addHeadingAnchors(raw))
     }
   })
   .filter((post) => Boolean(post.html))

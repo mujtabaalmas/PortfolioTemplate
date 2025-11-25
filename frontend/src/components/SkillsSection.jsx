@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { memo, useMemo } from 'react'
 import { gradientClasses, SLIDER_ITEMS } from '../constants/content'
 
 const skillLogoMap = SLIDER_ITEMS.reduce((acc, item) => {
@@ -66,4 +66,4 @@ const SkillsSection = ({ skills, skillBarsActive }) => {
   )
 }
 
-export default SkillsSection
+export default memo(SkillsSection)

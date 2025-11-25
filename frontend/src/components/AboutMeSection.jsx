@@ -30,8 +30,14 @@ const AboutMeSection = () => (
             Projects
           </a>
         </span>
+        <span className="about-me-curiosity">
+          <span className="about-me-curiosity-text">Curious about what I write?</span>{' '}
+          <a className="about-me-blog-link" href="/blog">
+            Posts
+          </a>
+        </span>
         <span className="about-me-email">
-          Feel free to reach out via{' '}
+          <span className="about-me-email-text">Feel free to reach out via</span>{' '}
           <a className="email-highlight" href="mailto:insights.mujtaba@gmail.com">
             Email
           </a>
