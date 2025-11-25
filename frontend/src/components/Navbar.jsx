@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { NAV_LINKS } from '../constants/content'
 import useSectionNavigation from '../hooks/useSectionNavigation'
+import { useThrottledScroll } from '../hooks/useThrottledScroll'
 
 const ICON_MAP = {
   home: (
@@ -135,16 +136,16 @@ const Navbar = () => {
   const closeMobileMenu = () => setMobileMenuOpen(false)
 
   useEffect(() => {
-    if (typeof window === 'undefined') return undefined
-
-    const handleScroll = () => {
+    if (typeof window !== 'undefined') {
       setHasScrolled(window.scrollY > 10)
     }
-
-    handleScroll()
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  const handleScroll = useCallback(() => {
+    setHasScrolled(window.scrollY > 10)
+  }, [])
+
+  useThrottledScroll(handleScroll, 100)
 
   const handleBrandClick = (event) => {
     event.preventDefault()
@@ -175,7 +176,7 @@ const Navbar = () => {
     <nav className={`navbar ${hasScrolled ? 'navbar-scrolled' : ''}`}>
       <div className="navbar-floating">
         <Link to="/" className="navbar-brand" aria-label="Go to home" onClick={handleBrandClick}>
-          <img src="/assets/logo.png" alt="Mujtaba logo" className="brand-logo" />
+          <img src="/assets/logo.png" alt="Mujtaba logo" className="brand-logo" loading="eager" />
         </Link>
 
         <div className="navbar-links">

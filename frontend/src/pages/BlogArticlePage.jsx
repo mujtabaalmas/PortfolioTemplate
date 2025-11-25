@@ -1,6 +1,7 @@
 import { Link, useParams } from 'react-router-dom'
 import Footer from '../components/Footer'
 import BlogArticleLayout from '../components/BlogArticleLayout'
+import TableOfContents from '../components/TableOfContents'
 import { BLOG_POSTS } from '../constants/content'
 
 const BlogArticlePage = () => {
@@ -8,7 +9,7 @@ const BlogArticlePage = () => {
   const post = BLOG_POSTS.find((entry) => entry.slug === slug)
 
   return (
-    <div className="container page-container">
+    <div className="container page-container blog-article-page">
       <main className="space-y-12">
         <section className="section-padding">
           <nav className="blog-breadcrumb" aria-label="Breadcrumb">
@@ -38,7 +39,10 @@ const BlogArticlePage = () => {
               </Link>
             </div>
           ) : (
-            <BlogArticleLayout post={post} />
+            <div className="blog-article-container">
+              <TableOfContents htmlContent={post.html} isHtmlArticle={Boolean(post.html)} />
+              <BlogArticleLayout post={post} />
+            </div>
           )}
         </section>
         <Footer />

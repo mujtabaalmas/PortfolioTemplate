@@ -1,19 +1,48 @@
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import ScrollRestoration from './components/ScrollRestoration'
-import HomePage from './pages/HomePage'
-import BlogPage from './pages/BlogPage'
-import BlogArticlePage from './pages/BlogArticlePage'
-import TermsPage from './pages/TermsPage'
-import PrivacyPage from './pages/PrivacyPage'
-import CookiePage from './pages/CookiePage'
-import SkillsPage from './pages/SkillsPage'
-import ProjectsPage from './pages/ProjectsPage'
-import ExperiencePage from './pages/ExperiencePage'
-import ContactPage from './pages/ContactPage'
 import { FALLBACK_PROJECTS, FALLBACK_SKILLS, SLIDER_ITEMS } from './constants/content'
 import './App.css'
+
+// Lazy load pages for better initial load performance
+const HomePage = lazy(() => import('./pages/HomePage'))
+const BlogPage = lazy(() => import('./pages/BlogPage'))
+const BlogArticlePage = lazy(() => import('./pages/BlogArticlePage'))
+const TermsPage = lazy(() => import('./pages/TermsPage'))
+const PrivacyPage = lazy(() => import('./pages/PrivacyPage'))
+const CookiePage = lazy(() => import('./pages/CookiePage'))
+const SkillsPage = lazy(() => import('./pages/SkillsPage'))
+const ProjectsPage = lazy(() => import('./pages/ProjectsPage'))
+const ExperiencePage = lazy(() => import('./pages/ExperiencePage'))
+const ContactPage = lazy(() => import('./pages/ContactPage'))
+
+// Loading fallback component
+const LoadingFallback = () => (
+  <div style={{
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    minHeight: '60vh',
+    color: 'rgba(255, 255, 255, 0.7)'
+  }}>
+    <div style={{
+      textAlign: 'center',
+      padding: '2rem'
+    }}>
+      <div style={{
+        width: '40px',
+        height: '40px',
+        border: '3px solid rgba(168, 85, 247, 0.3)',
+        borderTop: '3px solid rgba(168, 85, 247, 1)',
+        borderRadius: '50%',
+        margin: '0 auto 1rem',
+        animation: 'spin 1s linear infinite'
+      }} />
+      <p>Loading...</p>
+    </div>
+  </div>
+)
 
 const FETCH_TIMEOUT = 5000
 
@@ -133,40 +162,42 @@ function App() {
       <BrowserRouter>
         <ScrollRestoration />
         <Navbar />
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <HomePage
-                skills={skills}
-                projects={projects}
-                skillBarsActive={skillBarsActive}
-                sliderItems={SLIDER_ITEMS}
-                formStatus={formStatus}
-                isSubmitting={isSubmitting}
-                onSubmit={handleContactSubmit}
-              />
-            }
-          />
-          <Route path="/skills" element={<SkillsPage skills={skills} skillBarsActive={skillBarsActive} />} />
-          <Route path="/projects" element={<ProjectsPage projects={projects} />} />
-          <Route path="/experience" element={<ExperiencePage />} />
-          <Route
-            path="/contact"
-            element={
-              <ContactPage
-                formStatus={formStatus}
-                isSubmitting={isSubmitting}
-                onSubmit={handleContactSubmit}
-              />
-            }
-          />
-          <Route path="/blog" element={<BlogPage />} />
-          <Route path="/blog/:slug" element={<BlogArticlePage />} />
-           <Route path="/terms" element={<TermsPage />} />
-           <Route path="/privacy" element={<PrivacyPage />} />
-           <Route path="/cookies" element={<CookiePage />} />
-        </Routes>
+        <Suspense fallback={<LoadingFallback />}>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <HomePage
+                  skills={skills}
+                  projects={projects}
+                  skillBarsActive={skillBarsActive}
+                  sliderItems={SLIDER_ITEMS}
+                  formStatus={formStatus}
+                  isSubmitting={isSubmitting}
+                  onSubmit={handleContactSubmit}
+                />
+              }
+            />
+            <Route path="/skills" element={<SkillsPage skills={skills} skillBarsActive={skillBarsActive} />} />
+            <Route path="/projects" element={<ProjectsPage projects={projects} />} />
+            <Route path="/experience" element={<ExperiencePage />} />
+            <Route
+              path="/contact"
+              element={
+                <ContactPage
+                  formStatus={formStatus}
+                  isSubmitting={isSubmitting}
+                  onSubmit={handleContactSubmit}
+                />
+              }
+            />
+            <Route path="/blog" element={<BlogPage />} />
+            <Route path="/blog/:slug" element={<BlogArticlePage />} />
+            <Route path="/terms" element={<TermsPage />} />
+            <Route path="/privacy" element={<PrivacyPage />} />
+            <Route path="/cookies" element={<CookiePage />} />
+          </Routes>
+        </Suspense>
       </BrowserRouter>
     </>
   )

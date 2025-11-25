@@ -1,4 +1,6 @@
-const ProjectsSection = ({ projects }) => (
+import { memo } from 'react'
+
+const ProjectsSection = memo(({ projects }) => (
   <section id="projects" className="section-padding">
     <div className="section-header">
       <h2 className="section-title">Backends built for real-world scale</h2>
@@ -47,6 +49,6 @@ const ProjectsSection = ({ projects }) => (
       ))}
     </div>
   </section>
-)
+))
 
 export default ProjectsSection

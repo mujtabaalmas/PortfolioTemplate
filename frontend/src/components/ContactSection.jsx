@@ -1,4 +1,6 @@
-const ContactSection = ({ formStatus, isSubmitting, onSubmit }) => (
+import { memo } from 'react'
+
+const ContactSection = memo(({ formStatus, isSubmitting, onSubmit }) => (
   <section id="contact" className="section-padding contact-section">
     <div className="contact-header">
       <h2>Contact Me</h2>
@@ -42,7 +44,7 @@ const ContactSection = ({ formStatus, isSubmitting, onSubmit }) => (
         <div className="glass-panel p-6 contact-profile-card">
           <div className="contact-profile">
             <div className="contact-profile-avatar">
-              <img src="/assets/logo.png" alt="Mujtaba Almas avatar" />
+              <img src="/assets/logo.png" alt="Mujtaba Almas avatar" loading="lazy" />
             </div>
             <div>
               <p className="contact-profile-eyebrow">Available for hire</p>
@@ -86,6 +88,6 @@ const ContactSection = ({ formStatus, isSubmitting, onSubmit }) => (
       </div>
     </div>
   </section>
-)
+))
 
 export default ContactSection

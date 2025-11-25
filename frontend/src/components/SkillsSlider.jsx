@@ -25,7 +25,6 @@ const SkillsSlider = ({ items }) => {
               </div>
               <div className="skill-slider-text">
                 <span className="skill-slider-label">{item.label}</span>
-                {/* <span className="skill-slider-category">{item.category}</span> */}
               </div>
             </div>
           ))}

@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "generate:blog": "node scripts/generate-blog-metadata.js"
   },
   "dependencies": {
     "@fontsource/space-grotesk": "^5.2.10",

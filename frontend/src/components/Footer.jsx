@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { CONTACT_LINKS } from '../constants/content'
 
 const SOCIAL_ICONS = {
@@ -50,4 +51,4 @@ const Footer = () => (
   </footer>
 )
 
-export default Footer
+export default memo(Footer)
