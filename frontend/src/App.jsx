@@ -159,7 +159,7 @@ function App() {
 
   return (
     <>
-      <BrowserRouter>
+      <BrowserRouter basename="/v2">
         <ScrollRestoration />
         <Navbar />
         <Suspense fallback={<LoadingFallback />}>
