@@ -7,7 +7,7 @@ const HeroPortraitCard = ({ className = '' }) => {
       <div className="hero-image-container gradient-border glass-panel">
         <div className="blur-spot blur-spot-1" aria-hidden="true" />
         <div className="blur-spot blur-spot-2" aria-hidden="true" />
-        <img className="hero-image" src="/assets/mujtaba.jpg" alt="Portrait of Mujtaba Almas" />
+        <img className="hero-image" src="/v2/assets/mujtaba.jpg" alt="Portrait of Mujtaba Almas" />
       </div>
     </div>
   )

@@ -216,18 +216,18 @@ export const FOOTER_NAV = {
 export const gradientClasses = ['gradient-violet', 'gradient-sky', 'gradient-emerald', 'gradient-amber', 'gradient-pink']
 
 export const SLIDER_ITEMS = [
-  { label: 'Python', category: 'Language', logoSrc: '/assets/logosvg/Python.svg' },
-  { label: 'Flask', category: 'Framework', logoSrc: '/assets/logosvg/Flask.svg' },
-  { label: 'FastAPI', category: 'Framework', logoSrc: '/assets/logosvg/FastAPI.svg' },
-  { label: 'Django', category: 'Framework', logoSrc: '/assets/logosvg/Django.svg' },
-  { label: 'Django REST', category: 'Framework', logoSrc: '/assets/logosvg/Django REST.svg' },
-  { label: 'Docker', category: 'DevOps', logoSrc: '/assets/logosvg/Docker.svg' },
-  { label: 'PostgreSQL', category: 'Database', logoSrc: '/assets/logosvg/PostgresSQL.svg' },
-  { label: 'Redis', category: 'Caching', logoSrc: '/assets/logosvg/Redis.svg' },
-  { label: 'GitHub', category: 'Collaboration', logoSrc: '/assets/logosvg/GitHub.svg' },
-  { label: 'Git', category: 'Version Control', logoSrc: '/assets/logosvg/Git.svg' },
-  { label: 'Postman', category: 'Tools', logoSrc: '/assets/logosvg/Postman.svg' },
-  { label: 'JavaScript', category: 'Language', logoSrc: '/assets/logosvg/JavaScript.svg' },
-  { label: 'HTML5', category: 'Language', logoSrc: '/assets/logosvg/HTML5.svg' },
-  { label: 'CSS3', category: 'Language', logoSrc: '/assets/logosvg/CSS3.svg' }
+  { label: 'Python', category: 'Language', logoSrc: '/v2/assets/logosvg/Python.svg' },
+  { label: 'Flask', category: 'Framework', logoSrc: '/v2/assets/logosvg/Flask.svg' },
+  { label: 'FastAPI', category: 'Framework', logoSrc: '/v2/assets/logosvg/FastAPI.svg' },
+  { label: 'Django', category: 'Framework', logoSrc: '/v2/assets/logosvg/Django.svg' },
+  { label: 'Django REST', category: 'Framework', logoSrc: '/v2/assets/logosvg/Django REST.svg' },
+  { label: 'Docker', category: 'DevOps', logoSrc: '/v2/assets/logosvg/Docker.svg' },
+  { label: 'PostgreSQL', category: 'Database', logoSrc: '/v2/assets/logosvg/PostgresSQL.svg' },
+  { label: 'Redis', category: 'Caching', logoSrc: '/v2/assets/logosvg/Redis.svg' },
+  { label: 'GitHub', category: 'Collaboration', logoSrc: '/v2/assets/logosvg/GitHub.svg' },
+  { label: 'Git', category: 'Version Control', logoSrc: '/v2/assets/logosvg/Git.svg' },
+  { label: 'Postman', category: 'Tools', logoSrc: '/v2/assets/logosvg/Postman.svg' },
+  { label: 'JavaScript', category: 'Language', logoSrc: '/v2/assets/logosvg/JavaScript.svg' },
+  { label: 'HTML5', category: 'Language', logoSrc: '/v2/assets/logosvg/HTML5.svg' },
+  { label: 'CSS3', category: 'Language', logoSrc: '/v2/assets/logosvg/CSS3.svg' }
 ]

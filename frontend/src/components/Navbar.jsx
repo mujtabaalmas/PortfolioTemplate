@@ -176,7 +176,7 @@ const Navbar = () => {
     <nav className={`navbar ${hasScrolled ? 'navbar-scrolled' : ''}`}>
       <div className="navbar-floating">
         <Link to="/" className="navbar-brand" aria-label="Go to home" onClick={handleBrandClick}>
-          <img src="/assets/logo.png" alt="Mujtaba logo" className="brand-logo" loading="eager" />
+          <img src="/v2/assets/logo.png" alt="Mujtaba logo" className="brand-logo" loading="eager" />
         </Link>
 
         <div className="navbar-links">
