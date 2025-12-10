@@ -315,6 +315,24 @@ html {
   border-color: rgba(255, 255, 255, 0.2);
 }
 
+.btn-website {
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.15) 0%, rgba(56, 189, 248, 0.15) 100%);
+  color: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+}
+
+.btn-website:hover {
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.25) 0%, rgba(56, 189, 248, 0.25) 100%);
+  border-color: rgba(168, 85, 247, 0.5);
+  color: #fff;
+}
+
+@media (max-width: 480px) {
+  .btn-website {
+    padding: 0.5rem 0.875rem;
+  }
+}
+
 /* Badge */
 .badge {
   display: inline-flex;
