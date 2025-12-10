@@ -26,19 +26,19 @@ const AboutMeSection = () => (
       <div className="about-me-cta">
         <span className="about-me-callout">
           Want to see my projects?{' '}
-          <a className="about-me-project-link" href="/projects">
+          <a className="about-me-project-link" href="/v2/projects">
             Projects
           </a>
         </span>
         <span className="about-me-curiosity">
           <span className="about-me-curiosity-text">Curious about what I write?</span>{' '}
-          <a className="about-me-blog-link" href="/blog">
+          <a className="about-me-blog-link" href="/v2/blog">
             Posts
           </a>
         </span>
         <span className="about-me-email">
           <span className="about-me-email-text">Feel free to reach out via</span>{' '}
-          <a className="email-highlight" href="mailto:insights.mujtaba@gmail.com">
+          <a className="email-highlight" href="mailto:contact@mujtabaalmas.me">
             Email
           </a>
         </span>

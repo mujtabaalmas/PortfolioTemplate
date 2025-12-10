@@ -66,9 +66,9 @@ const ContactSection = memo(({ formStatus, isSubmitting, onSubmit }) => (
           <p className="contact-links-label">Ways to reach me</p>
           <ul className="contact-links">
             <li>
-              <a className="contact-link" href="mailto:insights.mujtaba@gmail.com">
+              <a className="contact-link" href="mailto:contact@mujtabaalmas.me">
                 <span>Email</span>
-                <span className="contact-link-value">insights.mujtaba@gmail.com</span>
+                <span className="contact-link-value">contact@mujtabaalmas.me</span>
               </a>
             </li>
             <li>

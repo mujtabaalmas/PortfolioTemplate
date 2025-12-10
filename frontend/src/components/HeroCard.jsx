@@ -17,13 +17,13 @@ const HeroCard = ({ orientation = 'horizontal', showActions = true, className = 
         </p>
         {showActions && (
           <div className="hero-actions">
-            <a href="/projects" className="btn btn-primary">
+            <a href="/v2/projects" className="btn btn-primary">
               <span>Explore work</span>
               <svg className="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 17L17 7m0 0H7m10 0v10" />
               </svg>
             </a>
-            {/* <a href="mailto:insights.mujtaba@gmail.com" className="btn btn-secondary">
+            {/* <a href="mailto:contact@mujtabaalmas.me" className="btn btn-secondary">
               <span>Say Hi</span>
               <svg className="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path

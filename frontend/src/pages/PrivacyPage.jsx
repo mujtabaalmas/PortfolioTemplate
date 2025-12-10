@@ -37,7 +37,7 @@ const sections = [
   {
     title: '4. Data Retention',
     content:
-      'Messages submitted through the contact form are retained only as long as necessary to continue the conversation or document prior communications. Analytics data is retained in aggregated, anonymized form. You can request deletion of your personal data at any time by emailing insights.mujtaba@gmail.com.'
+      'Messages submitted through the contact form are retained only as long as necessary to continue the conversation or document prior communications. Analytics data is retained in aggregated, anonymized form. You can request deletion of your personal data at any time by emailing contact@mujtabaalmas.me.'
   },
   {
     title: '5. Third-Party Services',
@@ -70,7 +70,7 @@ const sections = [
       'The right to withdraw consent'
     ],
     additionalContent:
-      'To exercise any of these rights, please contact me at insights.mujtaba@gmail.com.'
+      'To exercise any of these rights, please contact me at contact@mujtabaalmas.me.'
   },
   {
     title: '8. Children\'s Privacy',
@@ -93,7 +93,7 @@ const sections = [
       'If you have any questions, concerns, or requests regarding this Privacy Policy or our data practices, please contact:',
     contactInfo: {
       name: 'Mujtaba Almas',
-      email: 'insights.mujtaba@gmail.com',
+      email: 'contact@mujtabaalmas.me',
       location: 'Lahore, Pakistan'
     }
   }

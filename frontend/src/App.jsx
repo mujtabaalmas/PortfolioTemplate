@@ -131,7 +131,7 @@ function App() {
     if (!backendAvailable) {
       setFormStatus({
         type: 'error',
-        message: 'The backend is not available yet. Please reach out via insights.mujtaba@gmail.com'
+        message: 'The backend is not available yet. Please reach out via contact@mujtabaalmas.me'
       })
       return
     }

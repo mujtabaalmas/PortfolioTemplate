@@ -197,8 +197,8 @@ const CookiePage = () => (
         <h2>Questions?</h2>
         <p>
           If you have any questions about our use of cookies or this Cookie Policy, please contact me at{' '}
-          <a href="mailto:insights.mujtaba@gmail.com" className="legal-inline-link">
-            insights.mujtaba@gmail.com
+          <a href="mailto:contact@mujtabaalmas.me" className="legal-inline-link">
+            contact@mujtabaalmas.me
           </a>
         </p>
       </article>

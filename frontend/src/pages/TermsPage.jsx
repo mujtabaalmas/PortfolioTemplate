@@ -55,7 +55,7 @@ const sections = [
   {
     title: '11. Contact Information',
     body:
-      'If you have any questions about these Terms of Service, please contact me at insights.mujtaba@gmail.com.'
+      'If you have any questions about these Terms of Service, please contact me at contact@mujtabaalmas.me.'
   }
 ]
 

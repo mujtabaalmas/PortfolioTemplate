@@ -190,7 +190,7 @@ export const BLOG_POSTS = htmlPostDefinitions
   .filter((post) => Boolean(post.html))
 
 export const CONTACT_LINKS = [
-  { label: 'Email', value: 'insights.mujtaba@gmail.com', href: 'mailto:insights.mujtaba@gmail.com' },
+  { label: 'Email', value: 'contact@mujtabaalmas.me', href: 'mailto:contact@mujtabaalmas.me' },
   { label: 'GitHub', value: 'github.com/mujtabaalmas', href: 'https://github.com/mujtabaalmas' },
   { label: 'LinkedIn', value: 'linkedin.com/in/mujtabaalmas', href: 'https://linkedin.com/in/mujtabaalmas' }
 ]
