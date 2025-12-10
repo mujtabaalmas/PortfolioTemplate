@@ -1,6 +1,0 @@
-# Allow crawlers complete access to public routes and static assets.
-User-agent: *
-Allow: /
-
-# Provide sitemap for faster discovery.
-Sitemap: https://mujtabaalmas.me/sitemap.xml
