@@ -1,4 +1,12 @@
-# Mujtaba Almas - Personal Blog & Portfolio
+<div align="center">
+  <img src="frontend/public/assets/logo.png" alt="Logo" width="120">
+</div>
+<div align="center">
+
+ # Mujtaba Almas - Personal Blog & Portfolio V2
+
+</div>
+
 
 A modern, responsive personal blog and portfolio website built with React and Vite. Features a clean, dark-themed design with smooth animations and excellent performance.
 
