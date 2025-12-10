@@ -3,12 +3,12 @@
 </div>
 <div align="center">
 
- # Mujtaba Almas - Personal Blog & Portfolio V2
+ # Mujtaba Almas - Portfolio V2
 
 </div>
 
 
-A modern, responsive personal blog and portfolio website built with React and Vite. Features a clean, dark-themed design with smooth animations and excellent performance.
+A modern, responsive portfolio website built with React and Vite. Features a clean, dark-themed design with smooth animations and excellent performance.
 
 ![React](https://img.shields.io/badge/React-19.2.0-61DAFB?style=flat-square&logo=react&logoColor=white)
 ![Vite](https://img.shields.io/badge/Vite-7.2.2-646CFF?style=flat-square&logo=vite&logoColor=white)
@@ -18,6 +18,7 @@ A modern, responsive personal blog and portfolio website built with React and Vi
 ## 🌐 Live Demo
 
 - **This Portfolio**: [mujtabaalmas.me/v2](https://mujtabaalmas.me/v2)
+- **Main Website**: [mujtabaalmas.me](https://mujtabaalmas.me)
 
 ## ✨ Features
 
