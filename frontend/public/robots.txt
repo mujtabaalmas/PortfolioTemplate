@@ -3,4 +3,4 @@ User-agent: *
 Allow: /
 
 # Provide sitemap for faster discovery.
-Sitemap: https://mujtabaalmas.me/sitemap.xml
+Sitemap: https://mujtabaalmas.me/v2/sitemap.xml
